@@ -13,9 +13,10 @@ export const App = () => {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const perPage = 12;
+
   const [images, setImages] = useState([]);
   const [showMoreButton, setShowMoreButton] = useState(false);
-  const [showLoader, setSshowLoader] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleFormSubmit = nextQuery => {
     if (nextQuery !== query && nextQuery !== '') {
@@ -41,12 +42,12 @@ export const App = () => {
           return;
         }
 
-        setShowMoreButton(page < Math.ceil(total / perPage));
         setImages(images => [...images, ...appendImages]);
+        setShowMoreButton(page < Math.ceil(total / perPage));
       } catch (error) {
         toast.error('An error has occurred');
       } finally {
-        this.setState({ showLoader: false });
+        setShowLoader(false);
       }
     };
 

@@ -1,48 +1,45 @@
-import React from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 
-export class Modal extends React.Component {
-  componentDidMount() {
-    window.addEventListener('keydown', this.onKeyDown);
-  }
+export const Modal = ({ image, setShowModal }) => {
+  useEffect(() => {
+    const onKeyDown = e => {
+      if (e.code === 'Escape') {
+        setShowModal(false);
+      }
+    };
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.onKeyDown);
-  }
+    window.addEventListener('keydown', onKeyDown);
 
-  onKeyDown = e => {
-    if (e.code === 'Escape') {
-      this.props.onModalClose();
-    }
-  };
+    return () => {
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [setShowModal]);
 
-  onBackdropClick = e => {
+  const onBackdropClick = e => {
     if (e.target === e.currentTarget) {
-      this.props.onModalClose();
+      setShowModal(false);
     }
   };
 
-  render() {
-    const { image, onModalClose } = this.props;
-    return (
-      <div className={css.overlay} onClick={this.onBackdropClick}>
-        <div className={css.modal}>
-          <button
-            className={css.closeButton}
-            type="button"
-            onClick={() => {
-              onModalClose();
-            }}
-          ></button>
-          <img src={image.largeImageURL} alt={'Tags: ' + image.tags} />
-        </div>
+  return (
+    <div className={css.overlay} onClick={onBackdropClick}>
+      <div className={css.modal}>
+        <button
+          className={css.closeButton}
+          type="button"
+          onClick={() => {
+            setShowModal(false);
+          }}
+        ></button>
+        <img src={image.largeImageURL} alt={'Tags: ' + image.tags} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 Modal.types = {
   image: PropTypes.object.isRequired,
-  onModalClose: PropTypes.func.isRequired,
+  modalClose: PropTypes.func.isRequired,
 };

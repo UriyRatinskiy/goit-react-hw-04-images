@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
-import { ToastContainer, Slide, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useEffect, useState } from "react";
+import { ToastContainer, Slide, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import * as API from 'services/api';
-import { Searchbar } from 'components/Searchbar/Searchbar';
-import { ImageGallery } from 'components/ImageGallery/ImageGallery';
-import { Button } from 'components/Button/Button';
-import { Loader } from 'components/Loader/Loader';
-import css from './App.module.css';
+import * as API from "services/api";
+import { Searchbar } from "components/Searchbar/Searchbar";
+import { ImageGallery } from "components/ImageGallery/ImageGallery";
+import { Button } from "components/Button/Button";
+import { Loader } from "components/Loader/Loader";
+import css from "./App.module.css";
 
 export const App = () => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
   const perPage = 12;
 
@@ -18,8 +18,8 @@ export const App = () => {
   const [showMoreButton, setShowMoreButton] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
 
-  const handleFormSubmit = nextQuery => {
-    if (nextQuery !== query && nextQuery !== '') {
+  const handleFormSubmit = (nextQuery) => {
+    if (nextQuery !== query && nextQuery !== "") {
       setQuery(nextQuery);
       setImages([]);
       setPage(1);
@@ -27,7 +27,7 @@ export const App = () => {
   };
 
   useEffect(() => {
-    if (query === '') return;
+    if (query === "") return;
 
     const handleGetData = async () => {
       try {
@@ -38,15 +38,19 @@ export const App = () => {
         const { hits: appendImages, totalHits: total } = data;
 
         if (appendImages.length === 0) {
-          toast.error('Images not found');
+          toast.error("Images not found");
           return;
         }
 
-        setImages(images => [...images, ...appendImages]);
+        setImages((images) => [...images, ...appendImages]);
         setShowMoreButton(page < Math.ceil(total / perPage));
-      } catch (error) {
-        toast.error('An error has occurred');
-      } finally {
+      }
+
+      catch (error) {
+        toast.error("An error has occurred");
+      }
+
+      finally {
         setShowLoader(false);
       }
     };
@@ -55,7 +59,7 @@ export const App = () => {
   }, [query, page]);
 
   const handleMoreButtonClick = () => {
-    setPage(page => page + 1);
+    setPage((page) => page + 1);
   };
 
   return (
@@ -66,14 +70,7 @@ export const App = () => {
       {showMoreButton && <Button onClick={handleMoreButtonClick} />}
       {showLoader && <Loader />}
 
-      <ToastContainer
-        transition={Slide}
-        theme="colored"
-        autoClose={2500}
-        closeOnClick
-        pauseOnHover={false}
-        pauseOnFocusLoss
-      />
+      <ToastContainer transition={Slide} theme="colored" autoClose={2500} closeOnClick pauseOnHover={false} pauseOnFocusLoss />
     </div>
   );
 };

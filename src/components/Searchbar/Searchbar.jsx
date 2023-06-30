@@ -1,14 +1,14 @@
-import { useState } from 'react';
+import {useState} from 'react';
 import css from './Searchbar.module.css';
 
 export const Searchbar = ({ onSubmit }) => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
-  const onInputChange = e => {
+  const onInputChange = (e) => {
     setQuery(e.currentTarget.value);
   };
 
-  const onFormSubmit = e => {
+  const onFormSubmit = (e) => {
     e.preventDefault();
     onSubmit(query);
   };
